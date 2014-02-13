@@ -67,27 +67,38 @@ __author__ = 'Htedsv'
 theQuery = "{query}"
 
 rssurl = 'http://www.godic.net/dicts/prefix/' + urllib.quote(theQuery)
-txt = urllib.urlopen(rssurl).read()
-items = txt[2:-2].split('},{')
-
 print "&lt;?xml version=\"1.0\"?&gt;\n&lt;items&gt;"
-for x in items:
-    v_st = x.find('"value"')+9
-    v_ed = x.find('"', v_st)
-    title = x[v_st:v_ed]
 
-    l_st = x.find('"label"')+9
-    l_ed = x.find('"', l_st)
-    if x[l_st] == ' ': l_st += 3
-    sub = x[l_st:l_ed]
+try:
+    txt = urllib.urlopen(rssurl).read()
+    items = txt[2:-2].split('},{')
 
-    link = 'http://www.godic.net/dicts/de/'+urllib.quote(title)
+    for x in items:
+        v_st = x.find('"value"')+9
+        v_ed = x.find('"', v_st)
+        title = x[v_st:v_ed]
 
-    print "    &lt;item uid=\"YYeTs\" arg=\""+ link +"\"&gt;"
-    print "        &lt;title&gt;" + title + "&lt;/title&gt;"
-    print "        &lt;subtitle&gt;" + sub + "&lt;/subtitle&gt;"
+        l_st = x.find('"label"')+9
+        l_ed = x.find('"', l_st)
+        sub = x[l_st:l_ed]
+        title = title.replace('\\r', ' ')
+        title = title.replace('\\n', ' ')
+        sub = sub.replace('\\r', ' ')
+        sub = sub.replace('\\n', ' ')
+
+        link = 'http://www.godic.net/dicts/de/'+urllib.quote(title)
+
+        print "    &lt;item uid=\"YYeTs\" arg=\""+ link +"\"&gt;"
+        print "        &lt;title&gt;" + title + "&lt;/title&gt;"
+        print "        &lt;subtitle&gt;" + sub + "&lt;/subtitle&gt;"
+        print '''      &lt;icon type="fileicon"&gt;./icon.png&lt;/icon&gt;&lt;/item&gt;'''
+except Exception, e:
+    print "    &lt;item uid=\"YYeTs\" arg=\""+ 'http://www.godic.net/dicts/de/'+urllib.quote(theQuery) +"\"&gt;"
+    print "        &lt;title&gt;" + "在线搜索"+theQuery + "&lt;/title&gt;"
+    print "        &lt;subtitle&gt;" + "..." + "&lt;/subtitle&gt;"
     print '''      &lt;icon type="fileicon"&gt;./icon.png&lt;/icon&gt;&lt;/item&gt;'''
-print "&lt;/items&gt;\n"</string>
+print "&lt;/items&gt;\n"
+</string>
 				<key>subtext</key>
 				<string>Search 德语助手</string>
 				<key>title</key>
