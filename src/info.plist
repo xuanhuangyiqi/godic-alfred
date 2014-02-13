@@ -72,6 +72,7 @@ print "&lt;?xml version=\"1.0\"?&gt;\n&lt;items&gt;"
 try:
     txt = urllib.urlopen(rssurl).read()
     items = txt[2:-2].split('},{')
+    li = []
 
     for x in items:
         v_st = x.find('"value"')+9
@@ -85,15 +86,20 @@ try:
         title = title.replace('\\n', ' ')
         sub = sub.replace('\\r', ' ')
         sub = sub.replace('\\n', ' ')
-
+        li.append((title, sub))
+    li.sort(key=lambda q: q[0].lower())
+    cnt = 0
+    for x in li:
+        title, sub = x
+        cnt += 1
         link = 'http://www.godic.net/dicts/de/'+urllib.quote(title)
 
-        print "    &lt;item uid=\"YYeTs\" arg=\""+ link +"\"&gt;"
+        print "    &lt;item uid=\"%d\" arg=\""%cnt + link +"\"&gt;"
         print "        &lt;title&gt;" + title + "&lt;/title&gt;"
         print "        &lt;subtitle&gt;" + sub + "&lt;/subtitle&gt;"
         print '''      &lt;icon type="fileicon"&gt;./icon.png&lt;/icon&gt;&lt;/item&gt;'''
 except Exception, e:
-    print "    &lt;item uid=\"YYeTs\" arg=\""+ 'http://www.godic.net/dicts/de/'+urllib.quote(theQuery) +"\"&gt;"
+    print "    &lt;item uid=\"0\" arg=\""+ 'http://www.godic.net/dicts/de/'+urllib.quote(theQuery) +"\"&gt;"
     print "        &lt;title&gt;" + "在线搜索"+theQuery + "&lt;/title&gt;"
     print "        &lt;subtitle&gt;" + "..." + "&lt;/subtitle&gt;"
     print '''      &lt;icon type="fileicon"&gt;./icon.png&lt;/icon&gt;&lt;/item&gt;'''
