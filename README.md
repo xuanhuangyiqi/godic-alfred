@@ -1,7 +1,8 @@
 德语助手 Workflows for Alfred
 ============
 
-A open source Alfred Workflows for Deutschlernener, with can work as a Deutsch-Chinese online-dictionary for mac users.
+An open source Alfred Workflow as online German-Chinese Dictionary. This workflow is based on the online service of http://www.godic.net/
+
 
 Alfred的付费用户可以直接运行`.alfredworkflow`文件后即可使用
 
